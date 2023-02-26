@@ -1,136 +1,145 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
 
 public class ManagerPosterTest {
-    ManagerPoster manager = new ManagerPoster();
+    Repository repo = new Repository();
+    ManagerPoster manager = new ManagerPoster(repo);
 
-    @Test
+    FilmItem item1 = new FilmItem(1, "Film 1");
+    FilmItem item2 = new FilmItem(2, "Film 2");
+    FilmItem item3 = new FilmItem(3, "Film 3");
+    FilmItem item4 = new FilmItem(4, "Film 4");
+    FilmItem item5 = new FilmItem(5, "Film 5");
+    FilmItem item6 = new FilmItem(6, "Film 6");
+    FilmItem item7 = new FilmItem(7, "Film 7");
+    FilmItem item8 = new FilmItem(8, "Film 8");
+    FilmItem item9 = new FilmItem(9, "Film 9");
+    FilmItem item10 = new FilmItem(10, "Film 10");
+    FilmItem item11 = new FilmItem(11, "Film 11");
+
+    @Test  // Подсчет количества фильмов через Mockito
+    public void shouldGetCount() {
+        Repository repo = Mockito.mock(Repository.class);
+        FilmItem[] items = {item1, item2, item3};
+        doReturn(items).when(repo).getItems();
+
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
+
+        int expected = 3;
+        int actual = manager.getCount();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test // Проверка добавления фильмов в массив и вывод
     public void shouldAddFilm() {
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
+        manager.addFilm(item4);
+        manager.addFilm(item5);
 
-        String[] expected = {"Film 1", "Film 2", "Film 3", "Film 4", "Film 5"};
-        String[] actual = manager.findAdd();
+        FilmItem[] expected = {item1, item2, item3, item4, item5};
+        FilmItem[] actual = manager.findAdd();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldAddFilmNull() {
-        String[] expected = {};
-        String[] actual = manager.findAdd();
+        FilmItem[] expected = {};
+        FilmItem[] actual = manager.findAdd();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
-    @Test
-    public void shouldFilmLast() {
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
+    @Test // Проверка вывода фильмов в массив с конца
+    public void shouldReservedAllItems() {
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
 
-        String[] expected = {"Film 5", "Film 4", "Film 3", "Film 2", "Film 1"};
-        String[] actual = manager.findLast();
+        FilmItem[] expected = {item3, item2, item1};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFilmLastNull() {
-        String[] expected = {};
-        String[] actual = manager.findLast();
+        FilmItem[] expected = {};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFilmLastOne() {
-        manager.addFilm("Film 1");
-        String[] expected = {"Film 1"};
-        String[] actual = manager.findLast();
+        manager.addFilm(item1);
+        FilmItem[] expected = {item1};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFilmLastNine() {
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
-        manager.addFilm("Film 6");
-        manager.addFilm("Film 7");
-        manager.addFilm("Film 8");
-        manager.addFilm("Film 9");
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
+        manager.addFilm(item4);
+        manager.addFilm(item5);
+        manager.addFilm(item6);
+        manager.addFilm(item7);
+        manager.addFilm(item8);
+        manager.addFilm(item9);
 
-        String[] expected = {"Film 9", "Film 8", "Film 7", "Film 6", "Film 5", "Film 4", "Film 3", "Film 2", "Film 1"};
-        String[] actual = manager.findLast();
+        FilmItem[] expected = {item9, item8, item7, item6, item5, item4, item3, item2, item1};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFilmLastLimit() {
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
-        manager.addFilm("Film 6");
-        manager.addFilm("Film 7");
-        manager.addFilm("Film 8");
-        manager.addFilm("Film 9");
-        manager.addFilm("Film 10");
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
+        manager.addFilm(item4);
+        manager.addFilm(item5);
+        manager.addFilm(item6);
+        manager.addFilm(item7);
+        manager.addFilm(item8);
+        manager.addFilm(item9);
+        manager.addFilm(item10);
 
-        String[] expected = {"Film 10", "Film 9", "Film 8", "Film 7", "Film 6", "Film 5", "Film 4", "Film 3", "Film 2", "Film 1"};
-        String[] actual = manager.findLast();
+        FilmItem[] expected = {item10, item9, item8, item7, item6, item5, item4, item3, item2, item1};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFilmLastMoreLimit() {
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
-        manager.addFilm("Film 6");
-        manager.addFilm("Film 7");
-        manager.addFilm("Film 8");
-        manager.addFilm("Film 9");
-        manager.addFilm("Film 10");
-        manager.addFilm("Film 11");
+        manager.addFilm(item1);
+        manager.addFilm(item2);
+        manager.addFilm(item3);
+        manager.addFilm(item4);
+        manager.addFilm(item5);
+        manager.addFilm(item6);
+        manager.addFilm(item7);
+        manager.addFilm(item8);
+        manager.addFilm(item9);
+        manager.addFilm(item10);
+        manager.addFilm(item11);
 
-        String[] expected = {"Film 11", "Film 10", "Film 9", "Film 8", "Film 7", "Film 6", "Film 5", "Film 4", "Film 3", "Film 2"};
-        String[] actual = manager.findLast();
-
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldFilmLastAddLimit() {
-        ManagerPoster manager = new ManagerPoster(5);
-        manager.addFilm("Film 1");
-        manager.addFilm("Film 2");
-        manager.addFilm("Film 3");
-        manager.addFilm("Film 4");
-        manager.addFilm("Film 5");
-        manager.addFilm("Film 6");
-        manager.addFilm("Film 7");
-        manager.addFilm("Film 8");
-        manager.addFilm("Film 9");
-        manager.addFilm("Film 10");
-        manager.addFilm("Film 11");
-
-        String[] expected = {"Film 11", "Film 10", "Film 9", "Film 8", "Film 7"};
-        String[] actual = manager.findLast();
+        FilmItem[] expected = {item11, item10, item9, item8, item7, item6, item5, item4, item3, item2};
+        FilmItem[] actual = manager.getItems();
 
         Assertions.assertArrayEquals(expected, actual);
     }

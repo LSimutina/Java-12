@@ -1,9 +1,9 @@
 public class ManagerPoster {
-
-    private String[] movies = new String[0];
+    private Repository repo;
     private int limit;
 
-    public ManagerPoster() {
+    public ManagerPoster(Repository repo) {
+        this.repo = repo;
         this.limit = 10;
     }
 
@@ -12,30 +12,43 @@ public class ManagerPoster {
     }
 
     // Добавление нового фильма в массив
-    public void addFilm(String movie) {
-        String[] tmp = new String[movies.length + 1];
-        for (int i = 0; i < movies.length; i++) {
-            tmp[i] = movies[i];
-        }
-        tmp[tmp.length - 1] = movie;
-        movies = tmp;
+    public void addFilm(FilmItem item) {
+        repo.save(item);
     }
 
-    public String[] findAdd() {
-        return movies;
+    // Возвращает все элементы массива
+    public FilmItem[] findAdd() {
+        FilmItem[] all = repo.getItems();
+        return all;
     }
 
-    public String[] findLast() {
+    //Возвращает элементы массива с конца массива
+    public FilmItem[] getItems() {
+        FilmItem[] all = repo.getItems();
         int resultLength;
-        if (movies.length < limit) {
-            resultLength = movies.length;
+        if (all.length < limit) {
+            resultLength = all.length;
         } else {
             resultLength = limit;
         }
-        String[] tmp = new String[resultLength];
-        for (int i = 0; i < tmp.length; i++) {
-            tmp[i] = movies[movies.length - 1 - i];
+        FilmItem[] reversed = new FilmItem[all.length];
+        for (int i = 0; i < all.length; i++) {
+            reversed[i] = all[all.length - 1 - i];
         }
-        return tmp;
+
+        FilmItem[] tmp = new FilmItem[resultLength];
+        for (int i = 0; i < resultLength; i++) {
+            tmp[i] = reversed[i];
+        }
+        reversed = tmp;
+        return reversed;
+    }
+
+    public int getCount() {
+        int count = 0;
+        for (FilmItem item : repo.getItems()) {
+            count = count + 1;
+        }
+        return count;
     }
 }
